@@ -15,10 +15,10 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 
         path = (os.path.dirname(__file__) + "/Data/" + date_time)
         print(path)
-		f = open(path, mode='w+',encoding="utf-8", newline="")
+        f = open(path, mode='w+',encoding="utf-8", newline="")
         f_csv_writer = writer(f,delimiter=",")
-		f_csv_writer.writerow("row_index, row_time, outputvalue, force")
-		f.close()
+        f_csv_writer.writerow("row_index, row_time, outputvalue, force")
+        f.close()
         print("Values are saved to: ", path)
 
         hx711.reset()   #Zuruecksetzen
