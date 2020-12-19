@@ -28,7 +28,7 @@ def start(update, context):
     I will stop your print and text you if warping occurs.""")
     
     date_time = datetime.now().strftime("%y_%m_%d_%H_%M") + ".csv"
-    path = (os.path.dirname(__file__) + "/Data/" + date_time)
+    path = os.path.dirname(__file__) + "/Data/" + date_time
     print("Values are saved to: ", path)
     f = open(path, mode='w+',encoding="utf-8", newline="")
     f_csv_writer = writer(f,delimiter=",")
