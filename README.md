@@ -1,2 +1,0 @@
-# MLA
-MLA Praxis Teamaustausch
