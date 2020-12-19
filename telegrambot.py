@@ -66,11 +66,11 @@ def nowarping_LED(update, context):
 '''
 def set_limit(update, context):
     #limit = 
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit)
-
-def get_limit(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit +"N")
 '''
+def get_limit(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit + "N")
+
 
 #def commands above: 
 def unknown(update, context):
@@ -115,10 +115,10 @@ dispatcher.add_handler(nowarpingLED_handler)
 '''
 setlimit_handler = CommandHandler('set_limit', set_limit)
 dispatcher.add_handler(setlimit_handler)
+'''
 
 getlimit_handler = CommandHandler('get_limit', get_limit)
 dispatcher.add_handler(getlimit_handler)
-'''
 
 #Unknown commands handler - add handlers above:
 unknown_handler = MessageHandler(Filters.command, unknown)
