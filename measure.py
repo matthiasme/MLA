@@ -15,6 +15,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 		#Erstelle eine neue csv-datei:
 		f = open("Data/" + date_time, "w")
 		f_csv_writer = csv.writer(f,delimiter=",")
+		f_csv_writer.writerow("[row_index, row_time, outputvalue, force]")
 		print("Values are saved to: ", date_time)
 
 		hx711.reset()   #Zurücksetzen
