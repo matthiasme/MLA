@@ -5,55 +5,56 @@ import time, csv
 from datetime import datetime
 import numpy as np
 import statusLEDs, Relais
+import os
 
 def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
-	try:
-		GPIO.setmode(GPIO.BCM)
-		hx711 = HX711(dout_pin=5,pd_sck_pin=6,
-						gain_channel_A=64,select_channel='A')
-		
-		#Erstelle eine neue csv-datei:
-		f = open("Data/" + date_time, "w")
-		f_csv_writer = csv.writer(f,delimiter=",")
-		f_csv_writer.writerow("[row_index, row_time, outputvalue, force]")
-		print("Values are saved to: ", date_time)
+    try:
+        GPIO.setmode(GPIO.BCM)
+        hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')
 
-		hx711.reset()   #Zurücksetzen
-		time.sleep(1)
-		hx711.zero()    #Offset eliminieren
-		hx711.set_scale_ratio(scaleRatio)
-		
-		#measurement:
-		print("Now, I will read data in infinite loop. To exit press 'CTRL + C'")
-		print('Current value measured is: ')
-		row_index = 0
-		nowarping = True
+        path = (os.path.dirname(__file__) + "/Data/" + date_time)
+        print(path)
+        f = open(path, mode='w',encoding="utf-8", newline="")
+        f_csv_writer = csv.writer(f,delimiter=",")
+        f_csv_writer.writerow("[row_index, row_time, outputvalue, force]")
+        print("Values are saved to: ", path)
 
-		while nowarping:
-			#Messe Werte:
-			statusLEDs.lightLed("no_warping")
-			outputvalue = hx711.get_weight_mean(averageOfXValues)
-			force = round((outputvalue+27776.8/186245)*9.81 , 2)
-			print("Output: ", outputvalue, " Force: ", force)
+        hx711.reset()   #Zuruecksetzen
+        time.sleep(1)
+        hx711.zero()    #Offset eliminieren
+        hx711.set_scale_ratio(scaleRatio)
+        
+        #measurement:
+        print("Now, I will read data in infinite loop. To exit press 'CTRL + C'")
+        print('Current value measured is: ')
+        row_index = 0
+        nowarping = True
 
-			#Erstelle Inhalt der naechsten Reihe:
-			row_time = datetime.now().strftime("%H/%M/%S")
-			row_content = [row_index, row_time, outputvalue, force]
-			row_index +=1
-			print(row_content)
-			#Schreibe die naeste Reihe:
-			f_csv_writer.writerow(row_content)
+        while nowarping:
+            #Messe Werte:
+            statusLEDs.lightLed("no_warping")
+            outputvalue = hx711.get_weight_mean(averageOfXValues)
+            force = round((outputvalue+27776.8/186245)*9.81 , 2)
+            print("Output: ", outputvalue, " Force: ", force)
 
-			#Pruefe Warping Bedingung:
-			if force>limit:
-				nowarping = False
-				return True		
-							
-	except (KeyboardInterrupt, SystemExit): #Programm kann mit Ctrl + C angehalten werden
-		print("Pfiat di Gott! :D")
-		GPIO.cleanup()
-		f.close()
+            #Erstelle Inhalt der naechsten Reihe:
+            row_time = datetime.now().strftime("%H/%M/%S")
+            row_content = [row_index, row_time, outputvalue, force]
+            row_index +=1
+            print(row_content)
+            #Schreibe die naeste Reihe:
+            f_csv_writer.writerow(row_content)
 
-	finally:
-		f.close() # Schliesse Daten.txt
-		GPIO.cleanup()
+            #Pruefe Warping Bedingung:
+            if force>limit:
+                nowarping = False
+                return True        
+                            
+    except (KeyboardInterrupt, SystemExit): #Programm kann mit Ctrl + C angehalten werden
+        print("Pfiat di Gott! :D")
+        GPIO.cleanup()
+        f.close()
+
+    finally:
+        f.close() # Schliesse Daten.txt
+        GPIO.cleanup()
