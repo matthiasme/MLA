@@ -25,7 +25,8 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! 
                             I will stop your print and text you if warping occurs.""")
     date_time = datetime.now().strftime("%y-%m-%d_%H-%M") + ".csv"
-    if execute.measure(scaleRatio, numberOfAveragedValues, limit, date_time):
+    warping = execute.measure(scaleRatio, numberOfAveragedValues, limit, date_time)
+    if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
         statusLEDs.lightLed("warping")
         Relais.statusDrucker("warping")
