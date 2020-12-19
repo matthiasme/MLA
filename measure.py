@@ -8,18 +8,11 @@ import numpy as np
 import statusLEDs, Relais
 import os
 
-def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
+def measure(f, scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
     try:
         GPIO.setmode(GPIO.BCM)
         hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')
-
-        path = (os.path.dirname(__file__) + "/Data/" + date_time)
-        print(path)
-        f = open(path, mode='w',encoding="utf-8", newline="")
-        f_csv_writer = writer(f,delimiter=",")
-        #f_csv_writer.writerow("row tindex, row time, outputvalue, force")
-        print("Values are saved to: ", path)
-
+        
         hx711.reset()   #Zuruecksetzen
         time.sleep(1)
         hx711.zero()    #Offset eliminieren
@@ -32,7 +25,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         nowarping = True
 
         while nowarping:
-    #Oeffnne f
+            #Oeffnne f
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
@@ -46,9 +39,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             row_index +=1
             print(row_content)
             #Schreibe die naeste Reihe:
-            f_csv_writer.writerow(row_content)
-            #f.flush()
-            #f.close()
+            f.writerow(row_content)
 
             #Pruefe Warping Bedingung:
             if force>limit:
