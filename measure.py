@@ -15,9 +15,10 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 
         path = (os.path.dirname(__file__) + "/Data/" + date_time)
         print(path)
-        f = open(path, mode='w+',encoding="utf-8", newline="")
+		f = open(path, mode='w+',encoding="utf-8", newline="")
         f_csv_writer = writer(f,delimiter=",")
-        #f_csv_writer.writerow("row_index, row_time, outputvalue, force")
+		f_csv_writer.writerow("row_index, row_time, outputvalue, force")
+		f.close()
         print("Values are saved to: ", path)
 
         hx711.reset()   #Zuruecksetzen
@@ -32,6 +33,10 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         nowarping = True
 
         while nowarping:
+    #Oeffnne f
+            f = open(path, mode='w+',encoding="utf-8", newline="")
+            f_csv_writer = writer(f,delimiter=",")
+
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
@@ -46,6 +51,8 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             print(row_content)
             #Schreibe die naeste Reihe:
             f_csv_writer.writerow(str(row_content))
+            f.flush()
+            f.close()
 
             #Pruefe Warping Bedingung:
             if force>limit:
