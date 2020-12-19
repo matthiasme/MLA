@@ -1,18 +1,11 @@
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, MessageHandler
 from telegram.ext import InlineQueryHandler, Updater
-from emoji import emojize
 import logging
 
-#def emojis:
-cake = emojize(":cake:", use_aliases=True)
-
 #def commands:
-def help(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Hi")#f'Hello {update.effective_user.first_name} :wave:')
-
 def hello(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(f'Hello {update.effective_user.first_name}')
+    update.message.reply_text(f'Hello {update.effective_user.first_name} ' + '😃')
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
@@ -26,6 +19,9 @@ def caps(update, context):
 
 def callback_alarm(context: CallbackContext):
     context.bot.send_message(chat_id=context.job.context, text='BEEP')
+
+def dog(update, context):
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo='https://dog.ceo/api/breeds/image/random')
 
 #def commmands above:
 def unknown(update, context):
@@ -81,6 +77,8 @@ caps_handler = CommandHandler('caps', caps)
 dispatcher.add_handler(caps_handler)
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
+dog_handler = CommandHandler('dog', dog)
+dispatcher.add_handler(dog_handler)
 
 #queque execution:
 #job_minute = j.run_repeating(callback_minute, interval=60, first=0)
