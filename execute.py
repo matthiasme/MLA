@@ -6,7 +6,7 @@ from datetime import datetime
 import numpy as np
 import statusLEDs, Relais, telegrambot
 
-def setup(scaleRatio=-1, averageOfXValues = 20, limit = 15): 
+def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
 	try:
 		GPIO.setmode(GPIO.BCM)
 		hx711 = HX711(dout_pin=5,pd_sck_pin=6,
@@ -18,8 +18,7 @@ def setup(scaleRatio=-1, averageOfXValues = 20, limit = 15):
 		hx711.set_scale_ratio(scaleRatio)
 
 		#Erstelle eine neue csv-datei:
-		date_time = datetime.now().strftime("%y-%m-%d_%H-%M")
-		f = open("Data/" + date_time + ".csv", "w+")
+		f = open("Data/" + date_time, "w+")
 		f_csv_writer = csv.writer(f,delimiter=",")
 		print("Values are saved to: " + date_time + ".csv")
 		

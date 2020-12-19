@@ -3,65 +3,74 @@ from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, MessageHandler
 from telegram.ext import InlineQueryHandler, Updater
 import logging, os, time
+from datetime import datetime
 import execute, statusLEDs, Relais
+
+# Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
 scaleRatio = -1
 numberOfAveragedValues = 20
 limit = 15
+date_time = " "
 
 #def commands:
 def hello(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'Hello {update.effective_user.first_name} ' + '😃')
 
 def start(update, context):
-	#Starte die Überwachung
+    #Starte die Überwachung
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! 
-							I will stop your print and text you if warping occurs.""")
-		if execute.measure(scaleRatio, numberOfAveragedValues, limit):
-			context.bot.send_message(chat_id=update.effective_chat.id, 
-									text="Attention: warping occured! Please check your 3d printer")
-			statusLEDs.lightLed("warping")
-			Relais.statusDrucker("warping")
-			time.sleep(20)
-			Relais.statusDrucker("no_warping")
+                            I will stop your print and text you if warping occurs.""")
+    date_time = datetime.now().strftime("%y-%m-%d_%H-%M") + ".csv"
+    if execute.measure(scaleRatio, numberOfAveragedValues, limit, date_time):
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
+        statusLEDs.lightLed("warping")
+        Relais.statusDrucker("warping")
+        time.sleep(20)
+        Relais.statusDrucker("no_warping")
 
 def stop(update, context):
-	#Stoppe die Überwachung 
+    #Stoppe die Überwachung 
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye!
-							Warping assistent stoped!""")
-	#Ausgabe des Status +
-	os.system('sudo reboot now')
+                            Warping assistent stoped!""")
+    #Ausgabe des Status +
+    os.system('sudo reboot now')
 
 def reboot(update, context):
-	#Reboote den Raspberry 
+    #Reboote den Raspberry 
     context.bot.send_message(chat_id=update.effective_chat.id, text='Rebooting...')
-	os.system('sudo reboot now')
+    os.system('sudo reboot now')
 
 def echo(update, context):
-	#Wiederhole unverständliche Nachrichten
+    #Wiederhole unverständliche Nachrichten
     context.bot.send_message(chat_id=update.effective_chat.id, text= 'Kein Befehl fuer: ' + update.message.text)
 
 def statusDruck(update, context):
-	#Sende PNG der Datenauswertung
+    #Sende PNG der Datenauswertung
+	context.bot.send_message(chat_id=update.effective_chat.id, text='Recent Data: ')
     #context.bot.send_photo(chat_id=update.effective_chat.id, photo='PfadBild')
 
 def warping_LED(update, context):
-	#Schalte die rote LED an
-	statusLEDs.lightLed("warping")
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Red LED is turned on!")
+    #Schalte die gruene LED an
+    statusLEDs.lightLed("no_warping")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned off!")
 
 def nowarping_LED(update, context):
-	#Schalte die gruene LED an
+    #Schalte die gruene LED an
     statusLEDs.lightLed("no_warping")
     context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned off!")
 
 def set_limit(update, context):
-	#limit = 
+    #limit = 
     context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit)
 
 def get_limit(update, context):
-	context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit)
-		
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit)
+
+#def commands above: 
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+        
 #setup:
 updater = Updater(token ='1431428494:AAGlVbkvMhWOkBjUv8q4z1Nz4s93lwXWcf4', use_context=True)
 dispatcher = updater.dispatcher
@@ -70,10 +79,6 @@ jobqueque = updater.job_queue
 #error logging:
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
-
-#Bot Objekt wird erstellt und diesem werden die Befehle uebergeben
-bot = telepot.Bot('1405480476:AAHBt_66kwETu0BYK0Y4mtk07t4LtDEVa9c') #Token
-MessageLoop(bot, handle).run_as_thread()
 
 #handler:
 hello_handler = CommandHandler('hello', hello)
