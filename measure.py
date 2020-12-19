@@ -14,10 +14,8 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')
 
         path = (os.path.dirname(__file__) + "/Data/" + date_time)
-        print(path)
-        f = open(path, mode='w',encoding="utf-8", newline="")
-        f_csv_writer = writer(f,delimiter=",")
-        #f_csv_writer.writerow("row tindex, row time, outputvalue, force")
+        
+        content = np.asarray(["row tindex", "time", "outputvalue", "force"])
         print("Values are saved to: ", path)
 
         hx711.reset()   #Zuruecksetzen
@@ -41,14 +39,10 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 
             #Erstelle Inhalt der naechsten Reihe:
             row_time = datetime.now().strftime("%H/%M/%S")
-            print(row_time)
-            row_content = row_index, row_time, outputvalue, force
+            row_content = np.asarray([row_index, row_time, outputvalue, force])
+            content = numpy.append(content, row_content, axis = 0)
             row_index +=1
-            print(row_content)
-            #Schreibe die naeste Reihe:
-            f_csv_writer.writerow(row_content)
-            #f.flush()
-            #f.close()
+            np.savetxt(path, content, delimiter=",")
 
             #Pruefe Warping Bedingung:
             if force>limit:
@@ -59,6 +53,4 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         print("Pfiat di Gott! :D")
 
     finally:
-        f.close() # Schliesse Daten.txt
         GPIO.cleanup()
-        statusLEDs.lightLed("err")
