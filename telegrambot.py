@@ -30,7 +30,7 @@ def start(update, context):
     date_time = datetime.now().strftime("%y_%m_%d_%H_%M") + ".csv"
     path = os.path.dirname(__file__) + "/Data/" + date_time
     print("Values are saved to: ", path)
-    f = open(path, mode='w+',encoding="utf-8", newline="")
+    f = open(path, mode='w',encoding="utf-8", newline="")
     f_csv_writer = writer(f,delimiter=",")
     f_csv_writer.writerow("row tindex, row time, outputvalue, force")
     
