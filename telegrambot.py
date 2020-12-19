@@ -9,7 +9,6 @@ import logging, os, time
 from datetime import datetime
 import statusLEDs, Relais
 from measure import measure
-from csv import writer
 
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
@@ -25,9 +24,9 @@ def hello(update: Update, context: CallbackContext) -> None:
 def start(update, context):
     #Starte die Überwachung
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! 
-    I will stop your print and text you if warping occurs.""")
-    
+                            I will stop your print and text you if warping occurs.""")
     date_time = datetime.now().strftime("%y_%m_%d_%H_%M") + ".csv"
+<<<<<<< HEAD
     path = os.path.dirname(__file__) + "/Data/" + date_time
     print("Values are saved to: ", path)
     f = open(path, mode='w',encoding="utf-8", newline="")
@@ -36,20 +35,22 @@ def start(update, context):
     
     warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time, f_csv_writer)
 
+=======
+    warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time)
+>>>>>>> parent of 3ebc8f4... 123
     if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
         statusLEDs.lightLed("warping")
         Relais.statusDrucker("warping")
         time.sleep(20)
         Relais.statusDrucker("no_warping")
-        f.close()
 
 def stop(update, context):
     #Stoppe die Überwachung 
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye!
                             Warping assistent stopped!""")
     #Ausgabe des Status +
-    #os.system('sudo reboot now')
+    os.system('sudo reboot now')
 
 def reboot(update, context):
     #Reboote den Raspberry 
@@ -62,7 +63,7 @@ def echo(update, context):
 
 def statusDruck(update, context):
     #Sende PNG der Datenauswertung
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Recent Data: ')
+	context.bot.send_message(chat_id=update.effective_chat.id, text='Recent Data: ')
     #context.bot.send_photo(chat_id=update.effective_chat.id, photo='PfadBild')
 
 def warping_LED(update, context):
