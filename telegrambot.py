@@ -8,7 +8,7 @@ from telegram.ext import InlineQueryHandler, Updater
 import logging, os, time
 from datetime import datetime
 import statusLEDs, Relais
-from execute import measure
+from measure import measure
 
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 

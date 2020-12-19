@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import time, csv
 from datetime import datetime
 import numpy as np
-import statusLEDs, Relais, telegrambot
+import statusLEDs, Relais
 
 def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
 	try:
