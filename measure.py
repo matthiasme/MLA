@@ -15,7 +15,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 
         path = (os.path.dirname(__file__) + "/Data/" + date_time)
         print(path)
-        f = open(path, mode='w+',encoding="utf-8", newline="")
+        f = open(path, mode='w',encoding="utf-8", newline="")
         f_csv_writer = writer(f,delimiter=",")
         #f_csv_writer.writerow("row tindex, row time, outputvalue, force")
         print("Values are saved to: ", path)
@@ -33,9 +33,6 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 
         while nowarping:
     #Oeffnne f
-            f = open(path, mode='w+',encoding="utf-8", newline="")
-            f_csv_writer = writer(f,delimiter=",")
-
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
@@ -45,7 +42,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             #Erstelle Inhalt der naechsten Reihe:
             row_time = datetime.now().strftime("%H/%M/%S")
             print(row_time)
-            row_content = row_index, row_time, outputvalue, force
+            row_content = [row_index, row_time, outputvalue, force]
             row_index +=1
             print(row_content)
             #Schreibe die naeste Reihe:
