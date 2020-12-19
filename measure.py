@@ -61,4 +61,4 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
     finally:
         f.close() # Schliesse Daten.txt
         GPIO.cleanup()
-		statusLEDs.lightLed("err")
+        statusLEDs.lightLed("err")
