@@ -67,16 +67,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 #handler:
-hello_handler = CommandHandler('hello', hello)
+hello_handler = CommandHandler('hello', hello, run_async=True)
 dispatcher.add_handler(hello_handler)
-start_handler = CommandHandler('start', start)
+start_handler = CommandHandler('start', start, run_async=True)
 dispatcher.add_handler(start_handler)
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-dispatcher.add_handler(echo_handler)
+dispatcher.add_handler(echo_handler, run_async=True)
 caps_handler = CommandHandler('caps', caps)
-dispatcher.add_handler(caps_handler)
+dispatcher.add_handler(caps_handler, run_async=True)
 inline_caps_handler = InlineQueryHandler(inline_caps)
-dispatcher.add_handler(inline_caps_handler)
+dispatcher.add_handler(inline_caps_handler, run_async=True)
 dog_handler = CommandHandler('dog', dog)
 dispatcher.add_handler(dog_handler)
 

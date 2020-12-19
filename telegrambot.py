@@ -91,28 +91,28 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 #handler:
-hello_handler = CommandHandler('hello', hello)
+hello_handler = CommandHandler('hello', hello, run_async=True)
 dispatcher.add_handler(hello_handler)
 
-start_handler = CommandHandler('start', start)
+start_handler = CommandHandler('start', start, run_async=True)
 dispatcher.add_handler(start_handler)
 
-stop_handler = CommandHandler('stop', stop)
+stop_handler = CommandHandler('stop', stop, run_async=True)
 dispatcher.add_handler(stop_handler)
 
-echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
+echo_handler = MessageHandler(Filters.text & (~Filters.command), echo, run_async=True)
 dispatcher.add_handler(echo_handler)
 
-reboot_handler = CommandHandler('reboot', reboot)
+reboot_handler = CommandHandler('reboot', reboot, run_async=True)
 dispatcher.add_handler(reboot_handler)
 
-status_handler = CommandHandler('status', statusDruck)
+status_handler = CommandHandler('status', statusDruck, run_async=True)
 dispatcher.add_handler(status_handler)
 
-warpingLED_handler = CommandHandler('warpingLED', warping_LED)
+warpingLED_handler = CommandHandler('warpingLED', warping_LED, run_async=True)
 dispatcher.add_handler(warpingLED_handler)
 
-nowarpingLED_handler = CommandHandler('nowarpingLED', nowarping_LED)
+nowarpingLED_handler = CommandHandler('nowarpingLED', nowarping_LED, run_async=True)
 dispatcher.add_handler(nowarpingLED_handler)
 
 '''
@@ -120,11 +120,11 @@ setlimit_handler = CommandHandler('set_limit', set_limit)
 dispatcher.add_handler(setlimit_handler)
 '''
 
-getlimit_handler = CommandHandler('get_limit', get_limit)
+getlimit_handler = CommandHandler('get_limit', get_limit, run_async=True)
 dispatcher.add_handler(getlimit_handler)
 
 #Unknown commands handler - add handlers above:
-unknown_handler = MessageHandler(Filters.command, unknown)
+unknown_handler = MessageHandler(Filters.command, unknown, run_async=True)
 dispatcher.add_handler(unknown_handler)
 
 #start bot:
