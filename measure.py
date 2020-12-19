@@ -13,7 +13,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 						gain_channel_A=64,select_channel='A')
 		
 		#Erstelle eine neue csv-datei:
-		f = open("Data/" + date_time, "w+")
+		f = open("Data/" + date_time, "w")
 		f_csv_writer = csv.writer(f,delimiter=",")
 		print("Values are saved to: ", date_time)
 
@@ -39,7 +39,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 			row_time = datetime.now().strftime("%H/%M/%S")
 			row_content = [row_index, row_time, outputvalue, force]
 			row_index +=1
-
+			print(row_content)
 			#Schreibe die naeste Reihe:
 			f_csv_writer.writerow(row_content)
 
