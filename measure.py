@@ -41,7 +41,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             #Erstelle Inhalt der naechsten Reihe:
             row_time = datetime.now().strftime("%H/%M/%S")
             print(row_time)
-            row_content = row_index, row_time, outputvalue, force
+            row_content = row_index, row_time, outputvalue
             row_index +=1
             print(row_content)
             #Schreibe die naeste Reihe:
