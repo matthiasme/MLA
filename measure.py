@@ -45,7 +45,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             row_index +=1
             print(row_content)
             #Schreibe die naeste Reihe:
-            f_csv_writer.writerow(row_content)
+            f_csv_writer.writerow(str(row_content))
 
             #Pruefe Warping Bedingung:
             if force>limit:
