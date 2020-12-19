@@ -9,6 +9,7 @@ import logging, os, time
 from datetime import datetime
 import statusLEDs, Relais
 from measure import measure
+import csv
 
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
@@ -26,18 +27,20 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! 
                             I will stop your print and text you if warping occurs.""")
     date_time = datetime.now().strftime("%y_%m_%d_%H_%M") + ".csv"
-<<<<<<< HEAD
-    path = os.path.dirname(__file__) + "/Data/" + date_time
+    print('Datum=',date_time)
+# HEAD
+    #path = os.path.dirname(__file__) + "/Data/" + date_time
+    path = 'Data/' + date_time
     print("Values are saved to: ", path)
-    f = open(path, mode='w',encoding="utf-8", newline="")
-    f_csv_writer = writer(f,delimiter=",")
-    f_csv_writer.writerow("row tindex, row time, outputvalue, force")
+    f = open(path, mode='w+',encoding="utf-8", newline="")
+    f_csv_writer = csv.writer(f,delimiter=",")
+    f_csv_writer.writerow("row tindex,row time,outputvalue,force")
     
-    warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time, f_csv_writer)
+    warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time) #, f_csv_writer)
 
-=======
+
     warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time)
->>>>>>> parent of 3ebc8f4... 123
+# parent of 3ebc8f4... 123
     if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
         statusLEDs.lightLed("warping")
@@ -76,11 +79,11 @@ def nowarping_LED(update, context):
     statusLEDs.lightLed("no_warping")
     context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned on!")
 
-'''
-def set_limit(update, context):
+
+#def set_limit(update, context):
     #limit = 
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit +"N")
-'''
+    #context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit +"N")
+
 
 def get_limit(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit + "N")
@@ -93,7 +96,8 @@ def unknown(update, context):
 
 
 #bot setup:
-updater = Updater(token ='1431428494:AAGlVbkvMhWOkBjUv8q4z1Nz4s93lwXWcf4', use_context=True)
+#updater = Updater(token ='1431428494:AAGlVbkvMhWOkBjUv8q4z1Nz4s93lwXWcf4', use_context=True)
+updater = Updater(token = '1405480476:AAHBt_66kwETu0BYK0Y4mtk07t4LtDEVa9c', use_context=True)
 dispatcher = updater.dispatcher
 jobqueque = updater.job_queue
 
