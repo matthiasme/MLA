@@ -2,6 +2,7 @@
 from hx711 import HX711
 import RPi.GPIO as GPIO
 import time, csv
+from csv import writer
 from datetime import datetime
 import numpy as np
 import statusLEDs, Relais
@@ -15,7 +16,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         path = (os.path.dirname(__file__) + "/Data/" + date_time)
         print(path)
         f = open(path, mode='w+',encoding="utf-8", newline="")
-        f_csv_writer = csv.writer(f,delimiter=",")
+        f_csv_writer = writer(f,delimiter=",")
         f_csv_writer.writerow("[row_index, row_time, outputvalue, force]")
         print("Values are saved to: ", path)
 
