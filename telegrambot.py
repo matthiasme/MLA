@@ -7,7 +7,8 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, Mess
 from telegram.ext import InlineQueryHandler, Updater
 import logging, os, time
 from datetime import datetime
-import execute, statusLEDs, Relais
+import statusLEDs, Relais
+from execute import measure
 
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
@@ -25,7 +26,7 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! 
                             I will stop your print and text you if warping occurs.""")
     date_time = datetime.now().strftime("%y-%m-%d_%H-%M") + ".csv"
-    warping = execute.measure(scaleRatio, numberOfAveragedValues, limit, date_time)
+    warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time)
     if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
         statusLEDs.lightLed("warping")
