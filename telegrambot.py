@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+'''
+pip3 install python-telegram-bot --upgrade
+'''
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, MessageHandler
 from telegram.ext import InlineQueryHandler, Updater
