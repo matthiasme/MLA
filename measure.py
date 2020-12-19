@@ -10,7 +10,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 	try:
 		GPIO.setmode(GPIO.BCM)
 		hx711 = HX711(dout_pin=5,pd_sck_pin=6,
-						gain_channel_A=64,select_channel='A')
+						gain_channel_A=128,select_channel='A')
 		
 		#Erstelle eine neue csv-datei:
 		f = open("Data/" + date_time, "w+")
