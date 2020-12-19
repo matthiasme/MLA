@@ -12,15 +12,15 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 		hx711 = HX711(dout_pin=5,pd_sck_pin=6,
 						gain_channel_A=64,select_channel='A')
 		
-		hx711.reset()   #Zurücksetzen
-		time.sleep(1)
-		hx711.zero()    #Offset eliminieren
-		hx711.set_scale_ratio(scaleRatio)
-
 		#Erstelle eine neue csv-datei:
 		f = open("Data/" + date_time, "w+")
 		f_csv_writer = csv.writer(f,delimiter=",")
 		print("Values are saved to: " + date_time)
+
+		hx711.reset()   #Zurücksetzen
+		time.sleep(1)
+		hx711.zero()    #Offset eliminieren
+		hx711.set_scale_ratio(scaleRatio)
 		
 		#measurement:
 		print("Now, I will read data in infinite loop. To exit press 'CTRL + C'")
@@ -50,8 +50,8 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
 							
 	except (KeyboardInterrupt, SystemExit): #Programm kann mit Ctrl + C angehalten werden
 		print("Pfiat di Gott! :D")
-		f.close() 
 		GPIO.cleanup()
+		f.close()
 
 	finally:
 		f.close() # Schliesse Daten.txt
