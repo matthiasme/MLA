@@ -35,7 +35,7 @@ def start(update, context):
 def stop(update, context):
     #Stoppe die Überwachung 
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye!
-                            Warping assistent stoped!""")
+                            Warping assistent stopped!""")
     #Ausgabe des Status +
     os.system('sudo reboot now')
 
@@ -54,20 +54,21 @@ def statusDruck(update, context):
     #context.bot.send_photo(chat_id=update.effective_chat.id, photo='PfadBild')
 
 def warping_LED(update, context):
-    #Schalte die gruene LED an
-    statusLEDs.lightLed("no_warping")
+    #Schalte die rote LED an
+    statusLEDs.lightLed("warping")
     context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned off!")
 
 def nowarping_LED(update, context):
     #Schalte die gruene LED an
     statusLEDs.lightLed("no_warping")
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned off!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned on!")
 
 '''
 def set_limit(update, context):
     #limit = 
     context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit +"N")
 '''
+
 def get_limit(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit + "N")
 
