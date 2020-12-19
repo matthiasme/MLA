@@ -14,7 +14,7 @@ from measure import measure
 
 scaleRatio = -1
 numberOfAveragedValues = 20
-limit = 15
+limit = 15000000
 date_time = " "
 
 #def commands:
