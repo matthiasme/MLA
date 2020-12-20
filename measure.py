@@ -47,6 +47,3 @@ def measure(scaleRatio=1, averageOfXValues = 20, limit = 15, path = "Data/def.cs
                             
     except (KeyboardInterrupt, SystemExit): #Programm kann mit Ctrl + C angehalten werden
         print("Pfiat di Gott! :D")
-
-    finally:
-        GPIO.cleanup()

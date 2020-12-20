@@ -9,12 +9,15 @@ import logging, os, time
 from datetime import datetime
 import statusLEDs, Relais
 from measure import measure
+import RPi.GPIO as GPIO
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
+
 
 scaleRatio = 1
 numberOfAveragedValues = 20
 limit = 0.5
 date_time = " "
+
 
 #def commands:
 def hello(update: Update, context: CallbackContext) -> None:
@@ -27,7 +30,10 @@ def start(update, context):
     
     #path = os.path.dirname(__file__) + "/Data/" + date_time
     path = 'Data/' + date_time
-    warping = measure(scaleRatio, numberOfAveragedValues, limit, path)
+    try:
+        warping = measure(scaleRatio, numberOfAveragedValues, limit, path)
+    except:
+        GPIO.cleanup()
 
     if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
@@ -35,6 +41,7 @@ def start(update, context):
         statusLEDs.lightLed("warping")
         time.sleep(20)
         Relais.statusDrucker("no_warping")
+        
 
 def stop(update, context):
     #Stoppe die Überwachung 
@@ -66,32 +73,26 @@ def nowarping_LED(update, context):
     statusLEDs.lightLed("no_warping")
     context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned on!")
 
-
-#def set_limit(update, context):
-    #limit = 
-    #context.bot.send_message(chat_id=update.effective_chat.id, text="Limit is set to " + limit +"N")
-
-
 def get_parameter(update, context):
     msg = "limit = " + str(limit) + "\n" + "scale ratio = " + str(scaleratio) + "\n" +"average of x avlues = " + str(averageOfXValues)
     context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
-
 
 #def commands above: 
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
 
-
 #bot setup:
-#updater = Updater(token ='1431428494:AAGlVbkvMhWOkBjUv8q4z1Nz4s93lwXWcf4', use_context=True)
-updater = Updater(token = '1405480476:AAHBt_66kwETu0BYK0Y4mtk07t4LtDEVa9c', use_context=True)
+#updater = Updater(token ='1431428494:AAGlVbkvMhWOkBjUv8q4z1Nz4s93lwXWcf4', use_context=True) #Kai
+updater = Updater(token = '1405480476:AAHBt_66kwETu0BYK0Y4mtk07t4LtDEVa9c', use_context=True) #Max
 dispatcher = updater.dispatcher
 jobqueque = updater.job_queue
+
 
 #error logging:
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
+
 
 #handler:
 hello_handler = CommandHandler('hello', hello, run_async=True)
@@ -118,17 +119,13 @@ dispatcher.add_handler(warpingLED_handler)
 nowarpingLED_handler = CommandHandler('nowarpingLED', nowarping_LED, run_async=True)
 dispatcher.add_handler(nowarpingLED_handler)
 
-'''
-setlimit_handler = CommandHandler('set_limit', set_limit)
-dispatcher.add_handler(setlimit_handler)
-'''
-
 get_parameter_handler = CommandHandler('get_parameter', get_parameter, run_async=True)
 dispatcher.add_handler(get_parameter_handler)
 
 #Unknown commands handler - add handlers above:
 unknown_handler = MessageHandler(Filters.command, unknown, run_async=True)
 dispatcher.add_handler(unknown_handler)
+
 
 #start bot:
 updater.start_polling()
