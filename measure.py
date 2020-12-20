@@ -7,7 +7,7 @@ from datetime import datetime
 import numpy as np
 import statusLEDs, Relais
 
-def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, path = "Data/def.csv"): 
+def measure(scaleRatio=1, averageOfXValues = 20, limit = 15, path = "Data/def.csv"): 
     try:
         GPIO.setmode(GPIO.BCM)
         hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')
@@ -30,7 +30,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, path = "Data/def.c
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
-            force = round(((outputvalue-112.360606060606)/197498.869696969696)*9.81 , 2)
+            force = round(((outputvalue-112.360606060606)/-197498.869696969696)*9.81 , 2)
             print("Output: ", outputvalue, " Force: ", force)
 
             #Erstelle Inhalt der naechsten Reihe:

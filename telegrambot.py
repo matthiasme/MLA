@@ -11,7 +11,7 @@ import statusLEDs, Relais
 from measure import measure
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
-scaleRatio = -1
+scaleRatio = 1
 numberOfAveragedValues = 20
 limit = 15000000
 date_time = " "
