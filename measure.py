@@ -35,7 +35,7 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
-            force = round((outputvalue+27776.8/186245)*9.81 , 2)
+            force = round(((outputvalue-112.360606060606)/-197498.869696969696)*9.81 , 2)
             print("Output: ", outputvalue, " Force: ", force)
 
             #Erstelle Inhalt der naechsten Reihe:

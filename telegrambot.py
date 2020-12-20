@@ -32,9 +32,9 @@ def start(update, context):
     #path = os.path.dirname(__file__) + "/Data/" + date_time
     path = 'Data/' + date_time
     print("Values are saved to: ", path)
-    f = open(path, mode='w+',encoding="utf-8", newline="")
+    f = open(path, mode='w+',encoding="utf-8", newline="\n")
     f_csv_writer = csv.writer(f,delimiter=",")
-    f_csv_writer.writerow("row tindex,row time,outputvalue,force")
+    f_csv_writer.writerow("row index, data, outputvalue, force")
     
     warping = measure(scaleRatio, numberOfAveragedValues, limit, date_time) #, f_csv_writer)
 
