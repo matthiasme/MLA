@@ -3,6 +3,10 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, Mess
 from telegram.ext import InlineQueryHandler, Updater
 import logging
 
+limit = 15
+scaleratio = -1
+averageOfXValues = 10
+
 #def commands:
 def hello(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'Hello {update.effective_user.first_name} ' + '😃')
@@ -20,6 +24,13 @@ def caps(update, context):
 def callback_alarm(context: CallbackContext):
     context.bot.send_message(chat_id=context.job.context, text='BEEP')
 
+def get_values(update, context):
+    msg = "limit = " + str(limit) + "\n" + "scale ratio = " + str(scaleratio) + "\n" +"average of x avlues = " + str(averageOfXValues)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
+'''
+def set_values(context: CallbackContext):
+    context.bot.send_message(chat_id=context.job.context, text='BEEP')
+'''
 def dog(update, context):
     context.bot.send_photo(chat_id=update.effective_chat.id, photo='https://dog.ceo/api/breeds/image/random')
 
@@ -72,13 +83,17 @@ dispatcher.add_handler(hello_handler)
 start_handler = CommandHandler('start', start, run_async=True)
 dispatcher.add_handler(start_handler)
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-dispatcher.add_handler(echo_handler, run_async=True)
-caps_handler = CommandHandler('caps', caps)
-dispatcher.add_handler(caps_handler, run_async=True)
-inline_caps_handler = InlineQueryHandler(inline_caps)
-dispatcher.add_handler(inline_caps_handler, run_async=True)
+dispatcher.add_handler(echo_handler)
+caps_handler = CommandHandler('caps', caps,run_async=True)
+dispatcher.add_handler(caps_handler)
+inline_caps_handler = InlineQueryHandler(inline_caps, run_async=True)
+dispatcher.add_handler(inline_caps_handler)
 dog_handler = CommandHandler('dog', dog)
 dispatcher.add_handler(dog_handler)
+
+get_values_handler = CommandHandler('get_values', get_values,run_async=True)
+dispatcher.add_handler(get_values_handler)
+
 
 #queque execution:
 #job_minute = j.run_repeating(callback_minute, interval=60, first=0)
