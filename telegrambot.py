@@ -15,7 +15,7 @@ import RPi.GPIO as GPIO
 
 scaleRatio = 1
 numberOfAveragedValues = 10
-limit = 0.5
+limit = 0.75
 path_txt = " "
 path_png = " "
 
