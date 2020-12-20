@@ -1,0 +1,2 @@
+row tindex,time,outputvalue,force
+0,15-17-30,-519.0,0.03
