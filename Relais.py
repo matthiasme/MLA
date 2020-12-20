@@ -7,15 +7,13 @@ import statusLEDs
 Schalte Relais (NC) je nach Status
 '''
 
-channel = 18
-	
-#GPIO Setup
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(channel, GPIO.OUT)
+gpio_no = 18
+GPIO.setup(gpio_no, GPIO.OUT)
 
 #Schalte Drucker aus
-def drucker_aus(pin):
-	GPIO.output(pin, GPIO.HIGH)
+def drucker_aus(Klaus):
+	GPIO.output(Klaus, GPIO.HIGH)
 
 #Schalte Drucker ein	
 def drucker_ein(pin):

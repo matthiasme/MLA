@@ -3,7 +3,7 @@ from gpiozero import LED
 
 #Erstelle zwei LED Objekte
 green = LED("GPIO16")
-red = LED("GPIO19")
+red = LED("GPIO26")
 #Achtung unterschied PINs und GPIO
 
 #Schalte LEDs je nach Status des Druckers
