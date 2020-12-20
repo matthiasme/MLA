@@ -31,15 +31,14 @@ def start(update, context):
 
     if warping:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
-        statusLEDs.lightLed("warping")
         Relais.statusDrucker("warping")
+        statusLEDs.lightLed("warping")
         time.sleep(20)
         Relais.statusDrucker("no_warping")
 
 def stop(update, context):
     #Stoppe die Überwachung 
-    context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye!
-                            Warping assistent stopped!""")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye! \n Warping assistent stopped!""")
     #Ausgabe des Status +
     os.system('sudo reboot now')
 

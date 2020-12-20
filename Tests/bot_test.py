@@ -2,6 +2,7 @@ from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, MessageHandler
 from telegram.ext import InlineQueryHandler, Updater
 import logging
+import status
 
 limit = 15
 scaleratio = -1
@@ -13,6 +14,7 @@ def hello(update: Update, context: CallbackContext) -> None:
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    status.auswertung("Data/20-12-20_13-06.txt")
 
 def echo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)

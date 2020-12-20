@@ -37,7 +37,7 @@ def measure(scaleRatio=1, averageOfXValues = 20, limit = 15, path = "Data/def.cs
             row_time = datetime.now().strftime("%H-%M-%S")
             row_content = np.asarray([row_index, row_time, outputvalue, force])
             content.append(row_content)
-            np.savetxt(path, np.array(content), fmt='%s', delimiter=",")
+            np.savetxt(path, np.array(content), fmt='%s', delimiter=",", encoding ='utf-8')
             row_index +=1
 
             #Pruefe Warping Bedingung:
