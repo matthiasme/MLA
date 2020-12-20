@@ -1,19 +1,26 @@
-import csv
+#!/usr/bin/python3
+import numpy as np
 from datetime import datetime
-import os
-import random
+import random, os
 
-date_time = datetime.now().strftime("%y-%m-%d_%H-%M")
-path=os.path.dirname(__file__)+"/Data/" + date_time + ".csv"
-print(path)
-f = open(path, mode='w',encoding="utf-8", newline="")
-f_csv_writer = csv.writer(f,delimiter=",")
-row_index = 0
+date_time = datetime.now().strftime("%y-%m-%d_%H-%M") + ".txt"
+#print(date_time)
+path = os.path.dirname(__file__) + "/Data/" + date_time
+#print(path)
 
-outputvalue = random.randint(0,100)
-row_time = datetime.now().strftime("%H/%M/%S")
-row_content = [row_index, row_time, outputvalue]
-row_index +=1
-f_csv_writer.writerow(row_content)
+content = [["row tindex", "time", "outputvalue", "force"]]
+#print(content)
 
-f.close()
+for row_index in range(10):
+    row_time = datetime.now().strftime("%H-%M-%S")
+    outputvalue = random.randint(0,100)
+    force = outputvalue*3
+    row_content = [row_index, row_time, outputvalue, force]
+    #print(row_content)
+    content.append(row_content)
+    row_index+=1
+    content_to_safe = np.array(content)
+    np.savetxt(path, content_to_safe, delimiter=",",fmt='%s')
+    
+
+

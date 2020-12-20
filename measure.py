@@ -1,23 +1,19 @@
 #!/usr/bin/python3
 from hx711 import HX711
 import RPi.GPIO as GPIO
-import time, csv
+import time, csv, os
 from csv import writer
 from datetime import datetime
 import numpy as np
 import statusLEDs, Relais
-import os
 
-def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.csv"): 
+def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, path = "Data/def.csv"): 
     try:
         GPIO.setmode(GPIO.BCM)
         hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')
-
-        #path = (os.path.dirname(__file__) + "/Data/" + date_time)
-        path = 'Data/' + date_time
-
-        content = np.asarray(["row tindex", "time", "outputvalue", "force"])
         print("Values are saved to: ", path)
+
+        content = [["row tindex", "time", "outputvalue", "force"]]
 
         hx711.reset()   #Zuruecksetzen
         time.sleep(1)
@@ -31,7 +27,6 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
         nowarping = True
 
         while nowarping:
-    #Oeffnne f
             #Messe Werte:
             statusLEDs.lightLed("no_warping")
             outputvalue = hx711.get_weight_mean(averageOfXValues)
@@ -39,11 +34,11 @@ def measure(scaleRatio=-1, averageOfXValues = 20, limit = 15, date_time = "def.c
             print("Output: ", outputvalue, " Force: ", force)
 
             #Erstelle Inhalt der naechsten Reihe:
-            row_time = datetime.now().strftime("%H/%M/%S")
+            row_time = datetime.now().strftime("%H-%M-%S")
             row_content = np.asarray([row_index, row_time, outputvalue, force])
-            content = np.append(content, row_content, axis = 0)
+            content.append(row_content)
+            np.savetxt(path, np.array(content), fmt='%s', delimiter=",")
             row_index +=1
-            np.savetxt(path, content, delimiter=",",fmt='%s')
 
             #Pruefe Warping Bedingung:
             if force>limit:
