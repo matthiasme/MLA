@@ -7,7 +7,7 @@ from datetime import datetime
 import numpy as np
 import statusLEDs, Relais
 
-def measure(scaleRatio=1, averageOfXValues = 20, limit = 15, path = "Data/def.csv"): 
+def measure(scaleRatio=1, averageOfXValues = 20, limit = 0.75, path = "Data/def.csv"): 
     try:
         GPIO.setmode(GPIO.BCM)
         hx711 = HX711(dout_pin=5,pd_sck_pin=6, gain_channel_A=64,select_channel='A')

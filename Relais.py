@@ -26,9 +26,9 @@ Probiere den Drucker aus/einzuschalten je nach Status
 def statusDrucker(status):
 	try:
 		if status == "warping":
-			drucker_aus(channel)
+			drucker_aus(gpio_no)
 		elif status == "no_warping":
-			drucker_ein(channel)
+			drucker_ein(gpio_no)
 		else:
 			statusLEDs.lightLed("err")
 			
