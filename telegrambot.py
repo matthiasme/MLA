@@ -15,7 +15,7 @@ import RPi.GPIO as GPIO
 
 scaleRatio = 1
 numberOfAveragedValues = 20
-limit = 0.5
+limit = 0.75
 date_time = " "
 
 
