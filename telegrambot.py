@@ -7,16 +7,17 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, Filters, Mess
 from telegram.ext import InlineQueryHandler, Updater
 import logging, os, time
 from datetime import datetime
-import statusLEDs, Relais
+import statusLEDs, Relais, data_analysis
 from measure import measure
 import RPi.GPIO as GPIO
 # Copy emojis from: http://www.unicode.org/emoji/charts/full-emoji-list.html
 
 
 scaleRatio = 1
-numberOfAveragedValues = 20
+numberOfAveragedValues = 10
 limit = 0.5
-date_time = " "
+path_txt = " "
+path_png = " "
 
 
 #def commands:
@@ -26,22 +27,28 @@ def hello(update: Update, context: CallbackContext) -> None:
 def start(update, context):
     #Starte die Überwachung
     context.bot.send_message(chat_id=update.effective_chat.id, text="""Hi! I am your personal warping assistant! I will stop your print and text you if warping occurs.""")
-    date_time = datetime.now().strftime("%y-%m-%d_%H-%M") + ".txt"
+    date_time = datetime.now().strftime("%y-%m-%d_%H-%M")
     
     #path = os.path.dirname(__file__) + "/Data/" + date_time
-    path = 'Data/' + date_time
+    path_txt = 'Data/' + date_time + ".txt"
+    path_png = 'Data/' + date_time + ".png"
     try:
-        warping = measure(scaleRatio, numberOfAveragedValues, limit, path)
+        warping = measure(scaleRatio, numberOfAveragedValues, limit, path_txt)
     except:
         GPIO.cleanup()
 
     if warping:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
+        #act:
         Relais.statusDrucker("warping")
         statusLEDs.lightLed("warping")
         time.sleep(20)
         Relais.statusDrucker("no_warping")
-        
+        #analyse data:
+        data_analysis.data_analysis(path_txt= path_txt, path_png= path_png)
+        #inform user:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
+        context.bot.send_photo(chat_id=update.effective_chat.id, photo=path_png)
+
 
 def stop(update, context):
     #Stoppe die Überwachung 
@@ -59,9 +66,11 @@ def echo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text= 'Kein Befehl fuer: ' + update.message.text)
 
 def statusDruck(update, context):
-    #Sende PNG der Datenauswertung
-	context.bot.send_message(chat_id=update.effective_chat.id, text='Recent Data: ')
-    #context.bot.send_photo(chat_id=update.effective_chat.id, photo='PfadBild')
+    #analyse data:
+    data_analysis.data_analysis(path_txt= path_txt, path_png= path_png)
+    #inform user:
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Recent data: ")
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=path_png)
 
 def warping_LED(update, context):
     #Schalte die rote LED an
@@ -74,7 +83,7 @@ def nowarping_LED(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Green LED is turned on!")
 
 def get_parameter(update, context):
-    msg = "limit = " + str(limit) + "\n" + "scale ratio = " + str(scaleratio) + "\n" +"average of x avlues = " + str(averageOfXValues)
+    msg = "limit = " + str(limit) + "\n" + "scale ratio = " + str(scaleRatio) + "\n" +"average of x avlues = " + str(numberOfAveragedValues)
     context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
 #def commands above: 
