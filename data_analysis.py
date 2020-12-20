@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import random, os
 
-def data_analysis(path_txt, path_png):
+def data_analysis(path_txt, path_png, limit_value):
     #read in data:
     data = pd.read_csv(path_txt,sep=',',header=0,encoding='utf-8')
     
@@ -13,7 +13,7 @@ def data_analysis(path_txt, path_png):
     time = data.iloc[:,0]
     force = data.iloc[:,2]
     limit = np.array([[0, 50],
-                    [0.5, 0.5]])
+                    [limit_value, limit_value]])
     plt.figure(1)
     plt.plot(time,force,color='#0083CC')
     plt.plot(limit[0,:],limit[1,:],color='#B90F22',linestyle = 'dashed')

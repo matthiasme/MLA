@@ -44,16 +44,19 @@ def start(update, context):
         time.sleep(20)
         Relais.statusDrucker("no_warping")
         #analyse data:
-        data_analysis.data_analysis(path_txt= path_txt, path_png= path_png)
+        data_analysis.data_analysis(path_txt= path_txt, path_png= path_png, limit_value= limit)
         #inform user:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Attention: warping occured! Please check your 3d printer")
         context.bot.send_photo(chat_id=update.effective_chat.id, photo=path_png)
 
 
 def stop(update, context):
-    #Stoppe die Überwachung 
-    context.bot.send_message(chat_id=update.effective_chat.id, text="""Bye! \n Warping assistent stopped!""")
-    #Ausgabe des Status +
+    #Stoppe die Überwachung
+    #analyse data:
+    data_analysis.data_analysis(path_txt= path_txt, path_png= path_png, limit_value= limit)
+    #inform user:
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Bye! \n Warping assistent stopped!")
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=path_png)
     os.system('sudo reboot now')
 
 def reboot(update, context):
@@ -67,7 +70,7 @@ def echo(update, context):
 
 def statusDruck(update, context):
     #analyse data:
-    data_analysis.data_analysis(path_txt= path_txt, path_png= path_png)
+    data_analysis.data_analysis(path_txt= path_txt, path_png= path_png, limit_value= limit)
     #inform user:
     context.bot.send_message(chat_id=update.effective_chat.id, text="Recent data: ")
     context.bot.send_photo(chat_id=update.effective_chat.id, photo=path_png)
